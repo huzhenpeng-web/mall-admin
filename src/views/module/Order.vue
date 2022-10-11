@@ -2,33 +2,30 @@
   <div>
     <!-- 卡片 -->
     <el-card>
-      <!-- 搜索框 -->
-      <el-input></el-input>
-      <!-- 选择框 -->
-      <el-select></el-select>
-      <el-button type="primary">配货完成</el-button>
-      <el-button type="success">出库</el-button>
-      <el-button type="danger">关闭订单</el-button>
-      <el-form label-width="100px" class="addForm">
-        <el-form-item label="订单号">
-          <el-select></el-select>
-        </el-form-item>
-        <el-form-item label="订单总价">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="订单状态">
-          <el-input type="textarea"></el-input>
-        </el-form-item>
-        <el-form-item label="支付方式">
-          <el-input type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-input type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="操作">
-          <el-input type="number"></el-input>
-        </el-form-item>
-      </el-form>
+      <!-- 头部操作区域 -->
+      <div slot="header" class="option">
+        <!-- 搜索框 -->
+        <el-input placeholder="请输入订单号" clearable></el-input>
+        <!-- 选择框 -->
+        <el-select></el-select>
+        <el-button type="primary" size="medium" icon="el-icon-box">配货完成</el-button>
+        <el-button type="success" size="medium" icon="el-icon-receiving">
+          出库
+        </el-button>
+        <el-button type="danger" size="medium" icon="el-icon-delete">关闭订单</el-button>
+      </div>
+      <el-table stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+        <el-table-column type="selection" @selection-change="handleSelectionChange"></el-table-column>
+        <el-table-column label="订单号"></el-table-column>
+        <el-table-column label="订单总价"></el-table-column>
+        <el-table-column label="订单状态"></el-table-column>
+        <el-table-column label="支付方式"></el-table-column>
+        <el-table-column label="创建时间"></el-table-column>
+        <el-table-column label="操作"></el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination background layout="prev, pager, next" :total="1000">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -44,14 +41,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.addForm {
-  .el-input,
-  .el-textarea {
-    width: 224px;
+.option {
+  display: flex;
+  align-items: center;
+  .el-select,
+  .el-input {
+    margin-right: 10px;
+  }
+  .el-input {
+    width: 300px;
   }
 }
 
-.el-button {
-  margin-left: 100px;
+.el-pagination {
+  text-align: center;
 }
 </style>

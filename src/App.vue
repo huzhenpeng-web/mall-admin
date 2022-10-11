@@ -8,6 +8,7 @@
         <el-header>
           <Header></Header>
         </el-header>
+        <!-- 修改滚动条 -->
         <el-scrollbar class="scrollbar-wrapper">
           <el-main>
             <router-view>
@@ -36,15 +37,12 @@ export default {
   },
   watch: {
     activeIndex: {
-      handler(newVal) {
+      handler (newVal) {
         if (newVal.includes('/login')) {
           this.isShow = false
         }
       },
       immediate: true
-    },
-    isShow(newVal) {
-      console.log(newVal)
     }
   }
 }

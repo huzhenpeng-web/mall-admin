@@ -10,6 +10,7 @@
 
       <el-dropdown @visible-change="handleVisbleChange">
         <span class="el-dropdown-link">
+          <i class="el-icon-user"></i>
           用户<i class="el-icon-arrow-down el-icon--right" v-show="!iconShow"></i>
           <i class="el-icon-arrow-up el-icon--right" v-show="iconShow"></i>
         </span>
@@ -55,5 +56,9 @@ export default {
 
 .user {
   margin-right: 50px;
+}
+
+.el-dropdown-link {
+  cursor: pointer;
 }
 </style>

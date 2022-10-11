@@ -6,6 +6,8 @@ import store from '@/store/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+import { pathMap } from '@/utils/index'
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -16,7 +18,7 @@ const routes = [{
   path: '/dashboard',
   name: 'dashboard',
   meta: {
-    title: '数据分析'
+    title: pathMap.dashboard
   },
   component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Index.vue')
 },
@@ -24,7 +26,7 @@ const routes = [{
   path: '/login',
   name: 'login',
   meta: {
-    title: '用户登录'
+    title: pathMap.login
   },
   component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue')
 },
@@ -32,7 +34,7 @@ const routes = [{
   path: '/add',
   name: 'add',
   meta: {
-    title: '商品管理'
+    title: '添加商品'
   },
   component: () => import(/* webpackChunkName: "add" */ '@/views/module/Add.vue')
 },
@@ -40,7 +42,7 @@ const routes = [{
   path: '/swiper',
   name: 'swiper',
   meta: {
-    title: '轮播图配置'
+    title: pathMap.swiper
   },
   component: () => import(/* webpackChunkName: "swiper" */ '@/views/home/Swiper.vue')
 },
@@ -48,7 +50,7 @@ const routes = [{
   path: '/hot',
   name: 'hot',
   meta: {
-    title: '热销商品配置'
+    title: pathMap.hot
   },
   component: () => import(/* webpackChunkName: "hot" */ '@/views/home/Hot.vue')
 },
@@ -56,7 +58,7 @@ const routes = [{
   path: '/new',
   name: 'new',
   meta: {
-    title: '新品上线配置'
+    title: pathMap.new
   },
   component: () => import(/* webpackChunkName: "new" */ '@/views/home/New.vue')
 },
@@ -64,7 +66,7 @@ const routes = [{
   path: '/recommend',
   name: 'recommend',
   meta: {
-    title: '为您推荐配置'
+    title: pathMap.recommend
   },
   component: () => import(/* webpackChunkName: "recommend" */ '@/views/home/Recommend.vue')
 },
@@ -72,7 +74,7 @@ const routes = [{
   path: '/category',
   name: 'category',
   meta: {
-    title: '分类管理'
+    title: pathMap.category
   },
   component: () => import(/* webpackChunkName: "category" */ '@/views/module/Category.vue'),
   children: [{
@@ -91,7 +93,7 @@ const routes = [{
   path: '/good',
   name: 'good',
   meta: {
-    title: '商品管理'
+    title: pathMap.good
   },
   component: () => import(/* webpackChunkName: "new" */ '@/views/module/Good.vue')
 },
@@ -99,7 +101,7 @@ const routes = [{
   path: '/guest',
   name: 'guest',
   meta: {
-    title: '会员管理'
+    title: pathMap.guest
   },
   component: () => import(/* webpackChunkName: "guest" */ '@/views/module/Guest.vue')
 },
@@ -107,20 +109,23 @@ const routes = [{
   path: '/order',
   name: 'order',
   meta: {
-    title: '订单管理'
+    title: pathMap.order
   },
   component: () => import(/* webpackChunkName: "order" */ '@/views/module/Order.vue')
 },
 {
   path: '/order_detail',
   name: 'order_detail',
+  meta: {
+    title: pathMap.order_detail
+  },
   component: () => import(/* webpackChunkName: "order_detail" */ '@/views/module/OrderDetail.vue')
 },
 {
   path: '/account',
   name: 'account',
   meta: {
-    title: '修改账户'
+    title: pathMap.account
   },
   component: () => import(/* webpackChunkName: "account" */ '@/views/user/Account.vue')
 }
@@ -139,9 +144,13 @@ VueRouter.prototype.push = function push (location) {
 // 路由的前置守卫
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  if (!store.state.isLogin) {
+    return next('/login')
+  }
   // 保存激活地址和名称
   store.commit('SET_ACTIVEPATH', to.path)
   store.commit('SET_ACTIVENAME', to.meta.title)
+  // 修改页面标题
   document.title = to.meta.title
   next()
 })

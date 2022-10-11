@@ -99,6 +99,7 @@ export default {
       this.$refs.loginFormRef.validate(valid => {
         if (!valid) return this.$message.warning('请填入完整的信息')
         this.saveLoginStatus(true)
+        this.$message.success('登录成功')
         this.$router.replace('/dashboard')
       })
     },
