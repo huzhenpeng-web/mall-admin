@@ -28,14 +28,13 @@ export function Category (pageNumber, pageSize, categoryLevel, parentId) {
  * @returns
  */
 export function goodsList (pageNumber, pageSize, goodsName, goodsSellStatus) {
-  return service.get('/goods/list', {
-    params: {
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      goodsName: goodsName,
-      goodsSellStatus: goodsSellStatus
-    }
-  })
+  const data = {
+    pageNumber: pageNumber,
+    pageSize: pageSize,
+    goodsName: goodsName,
+    goodsSellStatus: goodsSellStatus
+  }
+  return service.post('/goods/list', data)
 }
 
 /**

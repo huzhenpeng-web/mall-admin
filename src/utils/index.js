@@ -25,9 +25,9 @@ export function hasEmoji (str = '') {
 export const baseURL = 'http://192.168.1.2/api'
 
 // 单张图片上传
-export const uploadImgServer = 'http://192.168.1.2/api/goods/upload/file'
+export const uploadImgServer = 'http://192.168.1.2/api/common/upload/file'
 // 删除图片
-export const deleteImgServer = 'http://192.168.1.2/api/goods/delete/file'
+export const deleteImgServer = 'http://192.168.1.2/api/common/delete/file'
 // 多张图片上传
 export const uploadImgsServer = 'http://localhost:28019/manage-api/v1/upload/files'
 

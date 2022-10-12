@@ -11,11 +11,11 @@
       <el-dropdown @visible-change="handleVisbleChange">
         <span class="el-dropdown-link">
           <i class="el-icon-user"></i>
-          用户<i class="el-icon-arrow-down el-icon--right" v-show="!iconShow"></i>
+          {{user.nickName}}<i class="el-icon-arrow-down el-icon--right" v-show="!iconShow"></i>
           <i class="el-icon-arrow-up el-icon--right" v-show="iconShow"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'Header',
   data() {
@@ -33,12 +33,20 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({ clearAdmin: 'CLEAR_ADMIN' }),
     handleVisbleChange(e) {
       e === true ? (this.iconShow = true) : (this.iconShow = false)
+    },
+    // 管理员退出登录
+    logout() {
+      // 清空保存在vuex的信息
+      this.clearAdmin()
+      // 返回到登录界面
+      this.$router.replace('/login')
     }
   },
   computed: {
-    ...mapState(['activeName'])
+    ...mapState(['activeName', 'user'])
   }
 }
 </script>

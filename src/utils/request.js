@@ -3,11 +3,15 @@ import {
   baseURL
 } from '@/utils/index'
 import Vue from 'vue'
+import store from '@/store/index'
 
 // 创建一个axios实例
 const service = axios.create({
   baseURL: baseURL,
-  timeout: 5000
+  timeout: 5000,
+  headers: {
+    token: store.state.token
+  }
 })
 
 // 默认 post 请求，使用 application/json 形式

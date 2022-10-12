@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-card>
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="修改昵称" name="first">
           <el-form ref="nameFormRef" :rules="nameFormRules" :model="nameForm" label-width="80px">
             <el-form-item label="登录名:" prop="loginName">
-              <el-input v-model="nameForm.loginName" clearable></el-input>
+              <el-input v-model="nameForm.loginUserName" disabled></el-input>
             </el-form-item>
             <el-form-item label="昵称:" prop="nickName">
               <el-input v-model="nameForm.nickName" clearable></el-input>
@@ -13,22 +13,22 @@
           </el-form>
           <div class="btns">
             <!-- 提交按钮 -->
-            <el-button type="primary" size="medium">确认修改</el-button>
+            <el-button type="primary" size="medium" @click="subNickName">确认修改</el-button>
             <el-button type="warning" size="medium" @click="resetNameForm">重置</el-button>
           </div>
         </el-tab-pane>
         <el-tab-pane label="修改密码" name="second">
           <el-form label-width="80px" ref="pwdFormRef" :rules="pwdFormRules" :model="pwdForm">
             <el-form-item label="原密码:" prop="oldPwd">
-              <el-input show-password v-model="pwdForm.oldPwd"></el-input>
+              <el-input show-password v-model="pwdForm.oldPassword"></el-input>
             </el-form-item>
             <el-form-item label="新密码:" prop="newPwd">
-              <el-input show-password v-model="pwdForm.newPwd"></el-input>
+              <el-input show-password v-model="pwdForm.newPassword"></el-input>
             </el-form-item>
           </el-form>
           <div class="btns">
             <!-- 提交按钮 -->
-            <el-button type="primary" size="medium">确认修改</el-button>
+            <el-button type="primary" size="medium" @click="editPwd">确认修改</el-button>
             <el-button type="warning" size="medium" @click="resetPwdForm">重置</el-button>
           </div>
         </el-tab-pane>
@@ -38,34 +38,36 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+import { updateNickName, updatePwd } from '@/api/user'
 export default {
   data() {
     const checkPwd = (rule, value, callback) => {
-      if (value !== this.pwdForm.oldPwd) {
-        return callback(new Error('两次输入密码不一致'))
+      if (value === this.pwdForm.oldPassword) {
+        return callback(new Error('旧密码和新密码不能保持一致'))
       }
     }
     return {
       // 名称表单
       nameForm: {
-        loginName: '',
+        loginUserName: '',
         nickName: ''
       },
       // 密码表单
       pwdForm: {
-        oldPwd: '',
-        newPwd: ''
+        oldPassword: '',
+        newPassword: ''
       },
       activeName: 'first',
       // 名称表单校验规则
       nameFormRules: {
-        loginName: [{ required: true, message: '请输入登录名', trigger: 'blur' }],
+        loginUserName: [{ required: true, message: '请输入登录名', trigger: 'blur' }],
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }]
       },
       // 密码表单校验规则
       pwdFormRules: {
-        oldPwd: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
-        newPwd: [
+        oldPassword: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
+        newPassword: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
           { validator: checkPwd, trigger: 'blur' }
         ]
@@ -73,17 +75,48 @@ export default {
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    },
+    ...mapMutations({ update_Admin: 'UPDATE_ADMIN', clear_Admin: 'CLEAR_ADMIN' }),
     // 重置名称表单
     resetNameForm() {
-      this.$refs.nameFormRef.resetFields()
+      this.nameForm.nickName = ''
     },
     // 重置密码表单
     resetPwdForm() {
       this.$refs.pwdFormRef.resetFields()
+    },
+    // 修改昵称
+    subNickName() {
+      this.$refs.nameFormRef.validate(async valid => {
+        if (!valid) return this.$message.warning('未填写昵称')
+        const res = await updateNickName(this.nameForm.nickName)
+        if (res.resultCode === 200) {
+          this.update_Admin(res.data)
+          this.$message.success('修改昵称成功')
+        }
+      })
+    },
+    // 修改密码
+    editPwd() {
+      this.$refs.pwdFormRef.validate(async valid => {
+        if (!valid) return this.$message.warning('请将表单填写完整')
+        const res = await updatePwd(this.pwdForm)
+        console.log(res)
+        if (res.resultCode === 200) {
+          this.clear_Admin()
+          this.$message.success('修改密码成功,请重新登录')
+          this.$router.replace('/login')
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
+  },
+  computed: {
+    ...mapState(['user'])
+  },
+  created() {
+    this.nameForm.loginUserName = this.user.loginUserName
+    this.nameForm.nickName = this.user.nickName
   }
 }
 </script>
@@ -99,5 +132,6 @@ export default {
   margin-top: 15px;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 40px;
 }
 </style>

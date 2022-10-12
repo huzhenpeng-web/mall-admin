@@ -64,7 +64,8 @@ import {
   Popover,
   Upload,
   Skeleton,
-  ColorPicker
+  ColorPicker,
+  Popconfirm
 } from 'element-ui'
 
 const plugins = [
@@ -130,7 +131,8 @@ const plugins = [
   Popover,
   Upload,
   Skeleton,
-  ColorPicker
+  ColorPicker,
+  Popconfirm
 ]
 
 Vue.prototype.$message = Message

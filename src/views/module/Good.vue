@@ -49,7 +49,7 @@
 import { baseURL } from '@/utils/index.js'
 import { goodsList, deleteGoodsList } from '@/api/goods.js'
 export default {
-  data() {
+  data () {
     return {
       // 当前页
       currentPage: 1,
@@ -70,14 +70,14 @@ export default {
   },
   methods: {
     // 处理多选框
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectGood = []
       val.forEach(item => {
         this.selectGood.push(item.goodsId)
       })
     },
     // 获取商品数据
-    async getGoods() {
+    async getGoods () {
       const res = await goodsList(this.currentPage, this.pagesize, this.goodsName, this.goodsSellStatus)
       this.goodsList = res.data.list
       this.total = res.data.totalCount
@@ -88,26 +88,26 @@ export default {
       })
     },
     // 页的条数变化
-    handleSizeChange(e) {
+    handleSizeChange (e) {
       this.pagesize = e
       this.getGoods()
     },
     // 当前页发生变化
-    handleCurrentChange(e) {
+    handleCurrentChange (e) {
       this.currentPage = e
       this.getGoods()
     },
     // 查询上架或下架的商品
-    selectGoods(index) {
+    selectGoods (index) {
       this.goodsSellStatus = index
       this.getGoods()
     },
     // 根据id编辑商品
-    edit(id) {
+    edit (id) {
       this.$router.push(`/add?id=${id}`)
     },
     // 搜索框input事件
-    search(e) {
+    search (e) {
       clearTimeout(this.timer)
       // 做一下防抖处理
       this.timer = setTimeout(() => {
@@ -116,7 +116,7 @@ export default {
       }, 500)
     },
     // 删除下架商品
-    async delGoods() {
+    async delGoods () {
       if (this.selectGood.length === 0) {
         return this.$message.warning('请先选择要操作的商品')
       }
@@ -132,7 +132,7 @@ export default {
       }
     },
     // 根据id上架/下架商品
-    async delSingleGoods(id) {
+    async delSingleGoods (id) {
       const arr = []
       arr.push(id)
       const res = await deleteGoodsList(arr)
@@ -144,7 +144,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.getGoods()
     this.baseURL = baseURL
   }

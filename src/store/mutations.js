@@ -9,9 +9,19 @@ const mutations = {
   [types.SET_ACTIVENAME] (state, value) {
     state.activeName = value
   },
-  // 保存登录状态
-  [types.SET_LOGINSTATUS] (state, value) {
-    state.isLogin = value
+  // 保存登录信息
+  [types.SAVE_ADMIN] (state, [value1, value2]) {
+    state.token = value2
+    state.user = value1
+  },
+  // 清空登录信息
+  [types.CLEAR_ADMIN] (state) {
+    state.user = {}
+    state.token = ''
+  },
+  // 修改用户昵称
+  [types.UPDATE_ADMIN] (state, value) {
+    state.user.nickName = value
   }
 }
 

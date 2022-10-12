@@ -11,8 +11,8 @@
           <!-- 登录表单 -->
           <div class="loginForm" @keyup.enter="login">
             <el-form :rules="loginFormRules" ref="loginFormRef" :model="loginForm">
-              <el-form-item prop="username">
-                <el-input ref="loginFocus" v-model="loginForm.username" clearable placeholder="请输入用户名"></el-input>
+              <el-form-item prop="loginName">
+                <el-input ref="loginFocus" v-model="loginForm.loginName" clearable placeholder="请输入用户名"></el-input>
               </el-form-item>
               <el-form-item prop="password">
                 <el-input v-model="loginForm.password" show-password clearable placeholder="请输入密码"></el-input>
@@ -70,15 +70,16 @@
 <script>
 import '@/assets/css/login.css'
 import { mapMutations } from 'vuex'
+import { login } from '@/api/user'
 export default {
   data() {
     return {
       loginForm: {
-        username: 'admin',
-        password: 'admin'
+        loginName: 'admin1',
+        password: ''
       },
       loginFormRules: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        loginUserName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       },
       // 注册表单
@@ -93,22 +94,30 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({ saveLoginStatus: 'SET_LOGINSTATUS' }),
+    ...mapMutations({ saveAdmin: 'SAVE_ADMIN' }),
     // 登录
     login() {
-      this.$refs.loginFormRef.validate(valid => {
+      this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return this.$message.warning('请填入完整的信息')
-        this.saveLoginStatus(true)
-        this.$message.success('登录成功')
-        this.$router.replace('/dashboard')
+        const res = await login(this.loginForm)
+        if (res.resultCode === 200) {
+          // 登录成功
+          this.saveAdmin([res.data, res.message])
+          this.$message.success('登录成功')
+          // if (this.checked) {
+          //   // 免密登录
+          //   localStorage.setItem('admin', JSON.stringify(res.data))
+          // }
+          this.$router.replace('/dashboard')
+        } else {
+          return this.$message.error('登录失败,请检查账号和密码是否正确')
+        }
       })
     },
     // 注册
     register() {}
   },
-  created() {
-    this.saveLoginStatus(false)
-  },
+
   mounted() {
     // 自动获取用户名输入框焦点
     this.$refs.loginFocus.focus()

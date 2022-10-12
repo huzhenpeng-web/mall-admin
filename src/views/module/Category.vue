@@ -29,7 +29,6 @@
       <!-- 分页 -->
       <el-pagination background layout="prev, pager, next" :total="1000">
       </el-pagination>
-
       <el-dialog title="添加轮播图" :visible.sync="addDialogVisible" width="35%">
         <el-form :rules="addFormRules" :model="addForm" label-width="80px" class="addForm">
           <el-form-item label="图片" prop="img">
