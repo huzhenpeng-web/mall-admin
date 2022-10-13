@@ -13,6 +13,8 @@ const mutations = {
   [types.SAVE_ADMIN] (state, [value1, value2]) {
     state.token = value2
     state.user = value1
+    localStorage.setItem('token', value2)
+    localStorage.setItem('admin', value1)
   },
   // 清空登录信息
   [types.CLEAR_ADMIN] (state) {

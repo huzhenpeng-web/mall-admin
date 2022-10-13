@@ -72,6 +72,9 @@ service.interceptors.response.use(response => {
   return response.data
 }, err => {
   tryHideFullScreenLoading()
+  if (err.code === 'ERR_NETWORK') {
+    Vue.prototype.$message.error('网络出现异常,请刷新重试!')
+  }
   return Promise.reject(err)
 })
 

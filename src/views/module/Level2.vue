@@ -1,9 +1,25 @@
 <template>
-  <div></div>
+  <div>
+    <Category :level="level">
+      <template #back>
+        <el-button @click="$router.go(-1)" class="el-icon-back" type="text">返回</el-button>
+      </template>
+    </Category>
+  </div>
 </template>
 
 <script>
-export default {}
+import Category from '@/components/category/Category.vue'
+export default {
+  components: {
+    Category
+  },
+  data() {
+    return {
+      level: 2 // 二级分类
+    }
+  }
+}
 </script>
 
 <style>

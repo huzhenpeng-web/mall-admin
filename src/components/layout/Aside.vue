@@ -1,6 +1,6 @@
 <template>
   <div class="Aside">
-    <el-menu @select="handleSelect" router :default-active="activeIndex" background-color="#333744" :unique-opened="true" text-color="#fff">
+    <el-menu router :default-active="activeIndex" background-color="#333744" :unique-opened="true" text-color="#fff">
       <p>后台管理端</p>
       <el-submenu v-for="(item,index) in asideData" :key="index" :index="item.path">
         <template slot="title">
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import { pathMap } from '@/utils/index'
 export default {
   name: 'Aside',
-  data() {
+  data () {
     return {
       // 侧边栏数据
       asideData: [
@@ -68,12 +68,6 @@ export default {
           arr: [{ name: pathMap.account, icon: 'icon-mima', path: '/account' }]
         }
       ]
-    }
-  },
-  methods: {
-    ...mapMutations({ saveActivePath: 'SET_ACTIVEPATH' }),
-    handleSelect(e) {
-      this.saveActivePath(e)
     }
   },
   computed: {

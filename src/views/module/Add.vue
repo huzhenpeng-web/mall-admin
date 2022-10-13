@@ -66,7 +66,7 @@ export default {
   components: {
     quillEditor
   },
-  data () {
+  data() {
     return {
       // 图片上传的数组
       fileList: [],
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     // 根据商品id查询商品详情
-    async getGoodsById () {
+    async getGoodsById() {
       const res = await findGoodsById(this.$route.query.id)
       console.log(res)
       this.baseURL = baseURL + res.data.goodsCoverImg
@@ -109,7 +109,7 @@ export default {
       })
     },
     // 获取商品分类列表
-    async getCategoryList () {
+    async getCategoryList() {
       const res = await categoryList()
       res.data.forEach(item => {
         // 第二个分类不为空
@@ -132,22 +132,22 @@ export default {
       console.log(res)
     },
     // 上传图片成功的操作
-    handlePictureCardSuccess (response) {
+    handlePictureCardSuccess(response) {
       this.addForm.goodsCoverImg = response.message
       this.addForm.goodsCarousel = response.message
     },
     // 删除图片
-    async handlePictureCardRemove (file) {
+    async handlePictureCardRemove(file) {
       const res = await delImg(file.response.message)
       if (res.resultCode === 200) {
         this.$message.success('移除图片成功')
       }
     },
-    handleChange (e) {
+    handleChange(e) {
       this.addForm.goodsCategoryId = e[e.length - 1]
     },
     // 添加商品或编辑商品
-    submit () {
+    submit() {
       if (this.$route.query.id) {
         // 更新商品
         this.$refs.addFormRef.validate(async valid => {
@@ -174,7 +174,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     if (this.$route.query.id) {
       this.getGoodsById()
       this.$store.commit('SET_ACTIVENAME', '修改商品')

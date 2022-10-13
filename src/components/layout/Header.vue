@@ -41,6 +41,8 @@ export default {
     logout() {
       // 清空保存在vuex的信息
       this.clearAdmin()
+      localStorage.removeItem('token')
+      localStorage.removeItem('admin')
       // 返回到登录界面
       this.$router.replace('/login')
     }

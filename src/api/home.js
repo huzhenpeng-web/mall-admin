@@ -57,3 +57,54 @@ export function findOneGoods (configId) {
 export function deleteGoods (ids) {
   return service.put('/category/goods/delete', ids)
 }
+
+/**
+ * 获取首页配置的轮播图数据
+ * @param {页码} pageNumber
+ * @param {一页显示多少条} pageSize
+ * @returns
+ */
+export function swiperList (pageNumber, pageSize) {
+  return service.get('/carousel/select', {
+    params: {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    }
+  })
+}
+
+/**
+ * 新增轮播图
+ * @param {carouselUrl 轮播图地址 redirectUrl 跳转地址 carouseRank 排序值} data
+ * @returns
+ */
+export function insertSwiper (data) {
+  return service.post('/carousel/insert', data)
+}
+
+/**
+ * 查询单个轮播图的数据
+ * @param {carouselId} id
+ * @returns
+ */
+export function selectOneSwiper (id) {
+  return service.get('/carousel/one?carouselId=' + id)
+}
+
+/**
+ * 批量删除轮播图
+ * @param {carouselId数组} ids
+ * @returns
+ */
+export function deleteSwipers (ids) {
+  return service.delete('/carousel/delete', { data: ids })
+}
+
+/**
+ * 更新轮播图数据
+ * @param {carouselId,carouselUrl,redirectUrl,carouselRank} data
+ * @returns
+ */
+export function updateSwiper (data) {
+  return service.put('/carousel/update', data)
+}

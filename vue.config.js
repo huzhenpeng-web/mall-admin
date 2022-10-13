@@ -9,7 +9,7 @@ module.exports = defineConfig({
   },
   devServer: {
     // onBeforeSetupMiddleware: require('./mock/index.js'), // 引入mock/index.js
-    host: 'localhost',
+    // host: 'localhost',
     port: 8080, // 端口号
     open: true // 启动项目自动打开浏览器
   }

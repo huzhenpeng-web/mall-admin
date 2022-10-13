@@ -19,10 +19,10 @@
         </el-tab-pane>
         <el-tab-pane label="修改密码" name="second">
           <el-form label-width="80px" ref="pwdFormRef" :rules="pwdFormRules" :model="pwdForm">
-            <el-form-item label="原密码:" prop="oldPwd">
+            <el-form-item label="原密码:" prop="oldPassword">
               <el-input show-password v-model="pwdForm.oldPassword"></el-input>
             </el-form-item>
-            <el-form-item label="新密码:" prop="newPwd">
+            <el-form-item label="新密码:" prop="newPassword">
               <el-input show-password v-model="pwdForm.newPassword"></el-input>
             </el-form-item>
           </el-form>
@@ -41,7 +41,7 @@
 import { mapState, mapMutations } from 'vuex'
 import { updateNickName, updatePwd } from '@/api/user'
 export default {
-  data() {
+  data () {
     const checkPwd = (rule, value, callback) => {
       if (value === this.pwdForm.oldPassword) {
         return callback(new Error('旧密码和新密码不能保持一致'))
@@ -58,6 +58,7 @@ export default {
         oldPassword: '',
         newPassword: ''
       },
+      // 当前激活的是哪一个面板
       activeName: 'first',
       // 名称表单校验规则
       nameFormRules: {
@@ -77,15 +78,15 @@ export default {
   methods: {
     ...mapMutations({ update_Admin: 'UPDATE_ADMIN', clear_Admin: 'CLEAR_ADMIN' }),
     // 重置名称表单
-    resetNameForm() {
+    resetNameForm () {
       this.nameForm.nickName = ''
     },
     // 重置密码表单
-    resetPwdForm() {
+    resetPwdForm () {
       this.$refs.pwdFormRef.resetFields()
     },
     // 修改昵称
-    subNickName() {
+    subNickName () {
       this.$refs.nameFormRef.validate(async valid => {
         if (!valid) return this.$message.warning('未填写昵称')
         const res = await updateNickName(this.nameForm.nickName)
@@ -96,7 +97,7 @@ export default {
       })
     },
     // 修改密码
-    editPwd() {
+    editPwd () {
       this.$refs.pwdFormRef.validate(async valid => {
         if (!valid) return this.$message.warning('请将表单填写完整')
         const res = await updatePwd(this.pwdForm)
@@ -114,7 +115,7 @@ export default {
   computed: {
     ...mapState(['user'])
   },
-  created() {
+  created () {
     this.nameForm.loginUserName = this.user.loginUserName
     this.nameForm.nickName = this.user.nickName
   }

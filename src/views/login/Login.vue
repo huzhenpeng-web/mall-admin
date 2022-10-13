@@ -21,7 +21,10 @@
             <div class="save">
               <!-- 记住我 -->
               <el-checkbox v-model="checked">记住我</el-checkbox>
-              <a @click.prevent="login" class="btn">登录</a>
+              <a @click.prevent="login" class="btn">
+                <i class="el-icon-loading" v-if="loading"></i>
+                登录
+              </a>
             </div>
           </div>
         </transition>
@@ -72,7 +75,7 @@ import '@/assets/css/login.css'
 import { mapMutations } from 'vuex'
 import { login } from '@/api/user'
 export default {
-  data() {
+  data () {
     return {
       loginForm: {
         loginName: 'admin1',
@@ -90,35 +93,43 @@ export default {
       // 控制显示登录还是注册
       isShow: false,
       // 下次登录免密
-      checked: true
+      checked: true,
+      loading: false
     }
   },
   methods: {
     ...mapMutations({ saveAdmin: 'SAVE_ADMIN' }),
     // 登录
-    login() {
+    login () {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return this.$message.warning('请填入完整的信息')
+        this.loading = true
         const res = await login(this.loginForm)
         if (res.resultCode === 200) {
           // 登录成功
           this.saveAdmin([res.data, res.message])
           this.$message.success('登录成功')
-          // if (this.checked) {
-          //   // 免密登录
-          //   localStorage.setItem('admin', JSON.stringify(res.data))
-          // }
+          if (this.checked) {
+            // 免密登录
+            localStorage.setItem('admin', JSON.stringify(res.data))
+            localStorage.setItem('token', res.message)
+          } else {
+            // 未选中免密登录 清空存储在本地的数据
+            localStorage.removeItem('admin')
+            localStorage.removeItem('token')
+          }
           this.$router.replace('/dashboard')
         } else {
           return this.$message.error('登录失败,请检查账号和密码是否正确')
         }
+        this.loading = false
       })
     },
     // 注册
-    register() {}
+    register () {}
   },
 
-  mounted() {
+  mounted () {
     // 自动获取用户名输入框焦点
     this.$refs.loginFocus.focus()
   }
@@ -145,7 +156,7 @@ export default {
   .el-checkbox {
     position: absolute;
     left: 10px;
-    top: -10px;
+    top: 5px;
     color: @color;
   }
 }

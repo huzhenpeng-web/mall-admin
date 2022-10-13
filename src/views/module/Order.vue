@@ -54,6 +54,7 @@ export default {
 }
 
 .el-pagination {
+  margin-top: 30px;
   text-align: center;
 }
 </style>
