@@ -9,6 +9,12 @@ const orderStatus = {
   '-3': '商家关闭'
 }
 
+// const orderType = {
+//   0: '无',
+//   1: '支付宝',
+//   2: '微信'
+// }
+
 export function orderMap (status) {
   return orderStatus[status] || '未知状态'
 }

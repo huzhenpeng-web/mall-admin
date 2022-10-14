@@ -4,21 +4,23 @@
     <div class="header">
       <!-- 点击的页面名称 -->
       <span>
+        <span name="back" v-if="activeName === '订单详情'" @click="$router.go(-1)">
+          <span class="el-icon-back" style="cursor:pointer;">返回</span>
+        </span>
         {{activeName}}
       </span>
       <!-- 用户 -->
-
       <el-dropdown @visible-change="handleVisbleChange">
         <span class="el-dropdown-link">
           <i class="el-icon-user"></i>
-          {{user.nickName}}<i class="el-icon-arrow-down el-icon--right" v-show="!iconShow"></i>
+          <span style="font-weight:600;font-size:17px;margin-left:3px;">{{user.nickName}}</span>
+          <i class="el-icon-arrow-down el-icon--right" v-show="!iconShow"></i>
           <i class="el-icon-arrow-up el-icon--right" v-show="iconShow"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
     </div>
   </div>
 </template>

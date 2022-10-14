@@ -30,27 +30,26 @@
 </template>
 
 <script>
+import { getEcharts } from '@/api/echarts'
 // 引入echarts
 import * as echarts from 'echarts'
-import options from '@/assets/js/echarts.js'
 export default {
-  data() {
+  data () {
     return {
       lineOption: null
     }
   },
   methods: {
-    init() {
-      // 初始化echarts
-      const line = echarts.init(this.$refs.line)
-      line.setOption(this.lineOption)
+    async getData () {
+      const res = await getEcharts()
+      if (res.resultCode === 200) {
+        const line = echarts.init(this.$refs.line)
+        line.setOption(res.data)
+      }
     }
   },
-  created() {
-    this.lineOption = options
-  },
-  mounted() {
-    this.init()
+  created () {
+    this.getData()
   }
 }
 </script>

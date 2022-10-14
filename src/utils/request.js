@@ -4,6 +4,7 @@ import {
 } from '@/utils/index'
 import Vue from 'vue'
 import store from '@/store/index'
+import router from '@/router/index'
 
 // 创建一个axios实例
 const service = axios.create({
@@ -69,6 +70,15 @@ service.interceptors.response.use(response => {
   // 清除定时器
   clearTimeout(timer)
   tryHideFullScreenLoading()
+  if (response.data.resultCode !== 200) {
+    if (response.data.message) response.error(response.data.message)
+    if (response.data.resultCode === 419) {
+      router.push({
+        path: '/login'
+      })
+    }
+    return Promise.reject(response.data)
+  }
   return response.data
 }, err => {
   tryHideFullScreenLoading()

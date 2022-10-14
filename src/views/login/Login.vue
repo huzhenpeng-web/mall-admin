@@ -75,7 +75,7 @@ import '@/assets/css/login.css'
 import { mapMutations } from 'vuex'
 import { login } from '@/api/user'
 export default {
-  data () {
+  data() {
     return {
       loginForm: {
         loginName: 'admin1',
@@ -100,7 +100,7 @@ export default {
   methods: {
     ...mapMutations({ saveAdmin: 'SAVE_ADMIN' }),
     // 登录
-    login () {
+    login() {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return this.$message.warning('请填入完整的信息')
         this.loading = true
@@ -126,10 +126,10 @@ export default {
       })
     },
     // 注册
-    register () {}
+    register() {}
   },
 
-  mounted () {
+  mounted() {
     // 自动获取用户名输入框焦点
     this.$refs.loginFocus.focus()
   }
